@@ -17,7 +17,7 @@ bool IsValidArgumentsCount(int argumensCount)
 	if (argumensCount != 3)
 	{
 		cout << "Wrong arguments count\n"
-			<< "Usage: lab_2.24.exe <input file> <output file>\n";
+			<< "Usage: FixBrackets.exe <input file> <output file>\n";
 		return false;
 	}
 
@@ -111,7 +111,7 @@ void ReplaceBrackets(string &inputLine, const string &searchString, const string
 		currentPosition = foundPosition + searchString.length();
 		foundPosition = inputLine.find(searchString, currentPosition);
 	}
-	
+
 	inputLine = result.append(inputLine, currentPosition, inputLine.length() - currentPosition);
 }
 
@@ -150,9 +150,9 @@ void FixBrackets(string &input)
 		{
 			if (stackTop->next == nullptr)
 				result += '}';
-			StackDel('}');				
+			StackDel('}');
 		}
-		else 
+		else
 			result += input[pos];
 	}
 

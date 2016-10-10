@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{132974BD-F176-4E30-84A8-302D59793C94}</ProjectGuid>
+    <ProjectGuid>{D3B49E8C-92D0-4037-A519-385CF4B06D8B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>lab_224</RootNamespace>
+    <RootNamespace>FixBrackets</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -93,10 +93,6 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PostBuildEvent>
-      <Command>
-      </Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -110,10 +106,6 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PostBuildEvent>
-      <Command>
-      </Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -131,10 +123,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PostBuildEvent>
-      <Command>
-      </Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -152,10 +140,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PostBuildEvent>
-      <Command>
-      </Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
