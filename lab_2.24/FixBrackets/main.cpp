@@ -1,4 +1,19 @@
-﻿#include <iostream>
+
+//24. В   некотором   компиляторе   ПАСКАЛя  текст  программы
+//включает примечания, выделенные  фигурными  скобками  '{', '}'
+//либо  парами  символов  '(*'  и  '*)'.Примечания  могут быть
+//вложенными друг в друга.Если примечание открыто знаком  '{',
+//то оно должно быть закрыто знаком '}'.Аналогично примечание,
+//начинающееся с символов '(*'  должно  заканчиваться  символами
+//'*)'.Требуется:
+//1) проверить правильность вложенности примечаний;
+//2) переписать   файл   с   исходным   текстом   так, чтобы
+//отсутствовала  вложенность  комментариев  при  сохранении   их
+//содержания  и  в  качестве  ограничивающих  символов  остались
+//только  фигурные  скобки.Учесть   случай, когда   символы
+//примечаний находятся в апострофах(10).
+
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -79,10 +94,12 @@ bool CheckBrackets(const string &input, size_t &lineNumber)
 		if (input[pos] == ')')
 			if (input[pos - 1] != '*')
 				continue;
+		if ((input[pos + 1] == '\'') && (input[pos - 1] == '\''))
+			continue;
 		char bracket = input[pos];
 		if ((bracket == '{') || (bracket == '('))
 			StackAdd(bracket);
-		if ((bracket == '}') || (bracket == ')'))
+		if ((bracket == '}') || ((bracket == ')') && (input[pos - 2] != '(')))
 			if (!StackDel(bracket))
 			{
 				cout << "Lishnaya skobka" << bracket << " v pos " << pos << " line " << lineNumber << endl;
@@ -93,6 +110,7 @@ bool CheckBrackets(const string &input, size_t &lineNumber)
 }
 
 void ReplaceBrackets(string &inputLine, const string &searchString, const string &replaceString)
+
 {
 	if (searchString == replaceString)
 		return;
@@ -107,7 +125,10 @@ void ReplaceBrackets(string &inputLine, const string &searchString, const string
 	while (foundPosition != inputLine.npos)
 	{
 		result.append(inputLine, currentPosition, foundPosition - currentPosition);
-		result += replaceString;
+		if ((inputLine[foundPosition + 2] != '\'') || (inputLine[foundPosition - 1] != '\''))
+			result += replaceString;
+		else
+			result += searchString;
 		currentPosition = foundPosition + searchString.length();
 		foundPosition = inputLine.find(searchString, currentPosition);
 	}
@@ -140,13 +161,13 @@ void FixBrackets(string &input)
 	for (size_t pos = 0; pos < input.length(); ++pos)
 	{
 		char symbol = input[pos];
-		if (symbol == '{')
+		if ((symbol == '{') && ((input[pos + 1] != '\'') || (input[pos - 1] != '\'')))
 		{
 			if (stackTop == nullptr)
 				result += '{';
 			StackAdd('{');
 		}
-		else if (symbol == '}')
+		else if ((symbol == '}') && ((input[pos + 1] != '\'') || (input[pos - 1] != '\'')))
 		{
 			if (stackTop->next == nullptr)
 				result += '}';
