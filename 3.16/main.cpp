@@ -210,6 +210,15 @@ string NodeInfo(Tree *node)
 
 	return result;
 }
+void DelSubTree(Tree *Node)
+{
+	if (Node != nullptr)
+	{
+		DelSubTree(Node->left);
+		DelSubTree(Node->right);
+		delete Node;
+	}
+}
 void Print(Tree *tree)
 {
 	Tree *current;
@@ -237,8 +246,8 @@ int main()
 	}
 	Tree *root = nullptr;
 	ReadFromFile(inputFile, &root);
-
-	Print(ThreadingTree(root));
+	DelSubTree(root);
+	//Print(ThreadingTree(root));
 
     return 0;
 }
