@@ -187,13 +187,11 @@ Tree* ThreadingTree(Tree *root)
 
 string NodeInfo(Tree *node)
 {
+	if ((node == nullptr) || (node->level < 0))
+		return "вершина не найдена";
 	string result;
 	for (size_t i = 0; i < node->level; ++i) result += ".";
 	result += node->name;
-	//if (node->right != nullptr)
-	//	result += " R, ";
-	//if (node->left != nullptr)
-	//	result += " L, ";
 	switch (node->Stasus)
 	{
 		case BEGIN:
@@ -250,6 +248,20 @@ Tree* FindLastRightThread(Tree *Top)
 		current = current->right;
 	}
 }
+Tree* FindCurrentNode(Tree *Top, string Name)
+{
+	Tree *current;
+	current = Top;
+	while ((current->level >= Top->level) && (current->name != Name) && (current!=nullptr))
+	{
+		while (current->left)
+		{
+			current = current->left;
+		}
+		current = current->right;
+	}
+	return current;
+}
 void DelThreadTree(Tree *Top, Tree *Parent)
 {
 	Tree* NodeBegin;
@@ -260,7 +272,6 @@ void DelThreadTree(Tree *Top, Tree *Parent)
 		LastRight = FindLastRightThread(Top);
 		NodeBegin->right = LastRight;
 		LastRight->right->Stasus -= END;
-		
 		LastRight->right = nullptr;
 	}
 	else if (Top->Stasus == EMPTY)
@@ -272,7 +283,9 @@ void DelThreadTree(Tree *Top, Tree *Parent)
 			LastRight = FindLastRightThread(Top);
 			Parent->right = LastRight->right;
 			LastRight->Stasus = EMPTY;
-			LastRight->right = nullptr;
+			//LastRight->right = nullptr;
+			LastRight->right = Parent->right;
+
 		}
 			
 	}
@@ -320,10 +333,17 @@ int main()
 	Tree *root = nullptr;
 	ReadFromFile(inputFile, &root);
 	//DelSubTree(root);
-	//Print(ThreadingTree(root));
+	Print(ThreadingTree(root));
+	cout << endl;
+	string SearchNodename;
+	while (getline(cin, SearchNodename))
+	{
+		cout << NodeInfo(FindCurrentNode(root, SearchNodename)) << endl;;
+	}
+
 	//FindBeginThread(root, ThreadingTree(root));
-	Tree *Head = ThreadingTree(root);
-	FindLastRightThread(Head);
-	DelThreadTree(root, Head);
+	//Tree *Head = ThreadingTree(root);
+	//FindLastRightThread(Head);
+	//DelThreadTree(root, Head);
     return 0;
 }
