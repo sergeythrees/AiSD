@@ -219,6 +219,25 @@ void DelSubTree(Tree *Node)
 		delete Node;
 	}
 }
+Tree* FindBeginThread(Tree *Root, Tree *EndNode)
+{
+	Tree *current;
+	current = Root->left;
+	while (current != EndNode)
+	{
+		while (current->left)
+		{
+			current = current->left;
+		}
+		if (current->right == EndNode)
+			return current->right;
+		current = current->right;
+	}
+}
+void DelThreadTree(Tree *Node)
+{
+
+}
 void Print(Tree *tree)
 {
 	Tree *current;
@@ -246,8 +265,8 @@ int main()
 	}
 	Tree *root = nullptr;
 	ReadFromFile(inputFile, &root);
-	DelSubTree(root);
+	//DelSubTree(root);
 	//Print(ThreadingTree(root));
-
+	FindBeginThread(root, ThreadingTree(root));
     return 0;
 }
