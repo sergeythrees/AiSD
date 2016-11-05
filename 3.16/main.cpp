@@ -13,7 +13,7 @@ using namespace std;
 struct Tree
 {
 	string name;
-	size_t level;
+	int level=0;
 	size_t Stasus = EMPTY;
 	Tree *fath;         // отец в исходном дереве
 	Tree *left;
@@ -140,6 +140,7 @@ Tree* ThreadingTree(Tree *root)
 	Tree *Head = new Tree;
 	Head->name = "Head";
 	Head->left = root;
+	Head->level = -1;
 	Head->right = nullptr;
 
 	stack *Top = new stack;
@@ -234,6 +235,21 @@ Tree* FindBeginThread(Tree *Root, Tree *EndNode)
 		current = current->right;
 	}
 }
+Tree* FindLastRightThread(Tree *Top)
+{
+	Tree *current;
+	current = Top->left;
+	while (current->level > Top->level)
+	{
+		while (current->left)
+		{
+			current = current->left;
+		}
+		if (current->right->level <= Top->level)
+			return current;
+		current = current->right;
+	}
+}
 void DelThreadTree(Tree *Node)
 {
 
@@ -267,6 +283,7 @@ int main()
 	ReadFromFile(inputFile, &root);
 	//DelSubTree(root);
 	//Print(ThreadingTree(root));
-	FindBeginThread(root, ThreadingTree(root));
+	//FindBeginThread(root, ThreadingTree(root));
+	FindLastRightThread(ThreadingTree(root));
     return 0;
 }
