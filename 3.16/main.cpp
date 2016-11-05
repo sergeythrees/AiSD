@@ -250,9 +250,47 @@ Tree* FindLastRightThread(Tree *Top)
 		current = current->right;
 	}
 }
-void DelThreadTree(Tree *Node)
+void DelThreadTree(Tree *Top, Tree *Parent)
 {
-
+	Tree* NodeBegin;
+	Tree* LastRight;
+	if ((Top->Stasus == END) || (Top->Stasus == END_BEGIN))
+	{
+		NodeBegin = FindBeginThread(Parent, Top);
+		LastRight = FindLastRightThread(Top);
+		NodeBegin->right = LastRight;
+		LastRight->right->Stasus -= END;
+		
+		LastRight->right = nullptr;
+	}
+	else if (Top->Stasus == EMPTY)
+	{
+		if (Parent->right != nullptr)
+			Parent->right->Stasus -= END;
+		else
+		{
+			LastRight = FindLastRightThread(Top);
+			Parent->right = LastRight->right;
+			LastRight->Stasus = EMPTY;
+			LastRight->right = nullptr;
+		}
+			
+	}
+	else if (Top->Stasus == BEGIN)
+	{
+		if (Parent->left != nullptr)
+		{
+			Parent->left->right = Top->right;
+			Parent->left->Stasus = BEGIN;
+		}
+		else
+		{
+			if (Parent->right == nullptr)
+				Parent->Stasus == Top->Stasus;
+			Parent->right = Top->right;
+		}
+	}
+	DelSubTree(Top);
 }
 void Print(Tree *tree)
 {
@@ -284,6 +322,8 @@ int main()
 	//DelSubTree(root);
 	//Print(ThreadingTree(root));
 	//FindBeginThread(root, ThreadingTree(root));
-	FindLastRightThread(ThreadingTree(root));
+	Tree *Head = ThreadingTree(root);
+	FindLastRightThread(Head);
+	DelThreadTree(root, Head);
     return 0;
 }
