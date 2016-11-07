@@ -170,7 +170,7 @@ Tree* ThreadingTree(Tree *root)
 
 string VertexInfo(Tree *vertex)
 {
-	if ((vertex == nullptr) || (vertex->level < 0))
+	if (vertex == nullptr) //|| (vertex->level < 0)
 		return "вершина не найдена";
 	string result;
 	for (size_t i = 0; i < vertex->level; ++i) result += ".";
@@ -220,9 +220,11 @@ void DelSubTree(Tree *vertex)
 	}
 	while (stackTop)
 	{
-		current = stackTop->Node;
-		current = nullptr;
+		current = (*stackTop).Node;
+		current->right = nullptr;
+		current->left = nullptr;
 		delete current;
+		//current = nullptr;
 		StackDel();
 	}
 }
