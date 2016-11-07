@@ -18,6 +18,7 @@ struct Tree
 	Tree *left;
 	Tree *right;
 };
+Tree *root = nullptr;
 
 struct stack
 {
@@ -171,7 +172,7 @@ Tree* ThreadingTree(Tree *root)
 string VertexInfo(Tree *vertex)
 {
 	if (vertex == nullptr) //|| (vertex->level < 0)
-		return "вершина не найдена";
+		return "> вершина не найдена";
 	string result;
 	for (size_t i = 0; i < vertex->level; ++i) result += ".";
 	result += vertex->name;
@@ -221,14 +222,15 @@ void DelSubTree(Tree *vertex)
 	while (stackTop)
 	{
 		current = (*stackTop).Node;
-		current->right = nullptr;
 		current->left = nullptr;
+		current->right = nullptr;
 		delete current;
-		//current = nullptr;
+
+
 		StackDel();
 	}
 }
-Tree* FindBegin(Tree *root, Tree *endNode)
+Tree* FindBegin(Tree *endNode)
 {
 	Tree *current;
 	current = root;
@@ -271,11 +273,11 @@ Tree* FindLastRightNode(Tree *Top)
 	return current;
 }
 
-Tree* FindCurrentNode(Tree *root, string Name)
+Tree* FindCurrentNode(string Name)
 {
 	Tree *current;
 	current = root;
-	while ((current->level >= root->level) && (current->name != Name) && (current!=nullptr))
+	while ((current != nullptr) && (current->level >= root->level) && (current->name != Name))
 	{
 		while (current->left)
 		{
@@ -285,16 +287,17 @@ Tree* FindCurrentNode(Tree *root, string Name)
 		}
 		current = current->right;
 	}
-	if (current->level < 0)
-		return nullptr;
+	if (current != nullptr)
+		if (current->level < 0)
+			return nullptr;
 	return current;
 }
 
-void Print(Tree *root)
+void Print()
 {
 	Tree *current;
 	current = root;
-	while ((current->level >= root->level) && (current != nullptr))
+	while ((current != nullptr) && (current->level >= root->level))
 	{
 		std::cout << VertexInfo(current) << endl;
 		while (current->left)
@@ -303,25 +306,24 @@ void Print(Tree *root)
 			std::cout << VertexInfo(current) << endl;
 		}
 		current = current->right;
+
 	}
 }
 
-void DelThreadSubTree(Tree *vertex, Tree *root)
+void DelThreadSubTree(Tree *vertex)
 {
-	Tree* NodeBegin = FindBegin(root, vertex);
+	Tree* NodeBegin = FindBegin(vertex);
 	Tree* LastRight = FindLastRightNode(vertex);
-	if (NodeBegin == vertex)
+	if (vertex == root)
 	{
 		DelSubTree(vertex);
+		root = nullptr;
 		return;
 	}
-
-
-
-
+	//if (ver)
 	//if ((vertex->status == END) || (vertex->status == END_BEGIN))
 	//{
-	//	NodeBegin = FindBegin(root, vertex);
+	//	NodeBegin = FindBegin(vertex);
 	//	LastRight = FindLastRightNode(vertex);
 	//	NodeBegin->right = LastRight->right;
 	//	LastRight->right->status = EMPTY;
@@ -329,7 +331,7 @@ void DelThreadSubTree(Tree *vertex, Tree *root)
 	//}
 	//else // if (Top->status == EMPTY)
 	//{
-	//	NodeBegin = FindBegin(root, vertex);
+	//	NodeBegin = FindBegin(vertex);
 	//	LastRight = FindLastRightNode(vertex);
 
 	//	if (NodeBegin->left == vertex)
@@ -354,13 +356,13 @@ int main()
 	inputFile.open("./res/tree.txt");
 	if (!inputFile.is_open())
 	{
-		std::cout << "Can not open file" << endl;
+		std::cout << "Не получается открыть файл " << endl;
 		return -1;
 	}
-	Tree *root = nullptr;
+	
 	ReadFromFile(inputFile, &root);
 	ThreadingTree(root);
-	Print(root);
+	Print();
 	std::cout << endl;
 	string SearchNodename;
 	Tree* Nod;
@@ -368,14 +370,14 @@ int main()
 	while (getline(cin, SearchNodename))
 	{
 		if (SearchNodename.empty()) break;
-		if (Nod = FindCurrentNode(root, SearchNodename))
+		if (Nod = FindCurrentNode(SearchNodename))
 		{
-			std::cout << VertexInfo(Nod) << endl << endl;
-			DelThreadSubTree(Nod, root);
+			cout << "> будет удалена вершина | " << VertexInfo(Nod) << " |"<< endl << endl;
+			DelThreadSubTree(Nod);
 		}
 		else
-			cout << "вершина не найдена" << endl;
-		Print(root);
+			cout << "> вершина не найдена" << endl;
+		Print();
 		std::cout << endl << endl << endl;
 	}
 
