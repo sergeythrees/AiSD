@@ -2,45 +2,12 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-const size_t EMPTY = 0;
-const size_t BEGIN = 1;
-const size_t END = 0;
-const size_t END_BEGIN = 1;
+#include "ThreadedTreeFunctions.h"
 
 using namespace std;
 
-struct Tree
-{
-	string name;
-	int level=0;
-	size_t status = EMPTY;
-	Tree *fath;         // отец в исходном дереве
-	Tree *left;
-	Tree *right;
-};
-Tree *root = nullptr;
 
-struct stack
-{
-	Tree *Node;
-	stack *Next;
-};
-stack *stackTop = nullptr;
-void StackAdd(Tree *vertex)
-{
-	stack *stackCurrent = new stack;
-	stackCurrent->Next = stackTop;
-	stackCurrent->Node = vertex;
-	stackTop = stackCurrent;
-}
 
-void StackDel()
-{
-	stack *stackCurrent;
-	stackCurrent = stackTop;
-	stackTop = stackTop->Next;
-	delete stackCurrent;
-}
 
 string ReadName(string line, size_t &readPos)
 {
@@ -82,7 +49,7 @@ void ReadFromFile(ifstream & inputFile, Tree **root)
 	currentNode = prevNode = nullptr;
 
 	stack *Top = new stack;
-	stack *stackCurrent;
+//	stack *stackCurrent;
 	Top->Next = nullptr;
 
 	while (getline(inputFile, currentLine))
@@ -119,236 +86,6 @@ void ReadFromFile(ifstream & inputFile, Tree **root)
 	}
 }
 
-Tree* ThreadingTree(Tree *root)
-{
-	Tree *Head = new Tree;
-	Head->name = "Head";
-	Head->left = root;
-	Head->level = -1;
-	Head->right = nullptr;
-
-	stack *Top = new stack;
-	stack *stackCurrent;
-	Top->Node = Head;
-	Top->Next = nullptr;
-
-	Tree *currentNode = root;
-
-	while (currentNode != Head)
-	{
-		if (currentNode->left != nullptr)
-		{
-			if (currentNode->right != nullptr)
-			{
-				//StackAdd(currentNode->right, Top);
-				stackCurrent = new stack;
-				stackCurrent->Next = Top;
-				stackCurrent->Node = currentNode->right;
-				Top = stackCurrent;
-			}
-			currentNode = currentNode->left;
-		}
-		else if (currentNode->right != nullptr)
-		{
-			currentNode = currentNode->right;
-		}
-		else if ((currentNode->left = currentNode->right) == nullptr)
-		{
-			currentNode->right = Top->Node;
-			Top->Node->status += END;
-			currentNode->status += BEGIN;
-			currentNode = Top->Node;
-
-			//StackDel(Top);
-			stackCurrent = Top;
-			Top = Top->Next;
-			delete stackCurrent;
-		}
-
-	}
-	return root;
-}
-
-string VertexInfo(Tree *vertex)
-{
-	if (vertex == nullptr) //|| (vertex->level < 0)
-		return "> вершина не найдена";
-	string result;
-	for (size_t i = 0; i < vertex->level; ++i) result += ".";
-	result += vertex->name;
-	if (vertex->status == BEGIN)
-		result += " ->" + vertex->right->name;
-
-	/*switch (vertex->status)
-	{
-		case BEGIN:
-			result += " ->" + vertex->right->name;
-			break;
-		case END:
-			result += " <-";
-			break;
-		case END_BEGIN:
-			result += " <- ->" + vertex->right->name;
-			break;
-		default:
-				break;
-	}*/
-
-	return result;
-}
-
-//void DelSubTree(Tree *vertex)
-//{
-//	if (vertex != nullptr)
-//	{
-//		DelSubTree(vertex->left);
-//		DelSubTree(vertex->right);
-//		delete vertex;
-//	}
-//}
-void DelSubTree(Tree *vertex)
-{
-	Tree *current = vertex;
-	while (current)
-	{
-		StackAdd(current);
-		while (current->left)
-		{
-			current = current->left;
-			StackAdd(current);
-		}
-		current = current->right;
-	}
-	while (stackTop)
-	{
-		current = (*stackTop).Node;
-		current->left = nullptr;
-		current->right = nullptr;
-		delete current;
-
-
-		StackDel();
-	}
-}
-Tree* FindBegin(Tree *endNode)
-{
-	Tree *current;
-	current = root;
-	while (current != endNode)
-	{
-		while (current->left)
-		{
-			if (current->left == endNode)
-				return current;
-			current = current->left;
-			
-		
-		}
-		if (current->right == endNode)
-			return current;
-		current = current->right;
-	}
-}
-
-Tree* FindLastRightNode(Tree *Top)
-{
-	Tree *current;
-	current = Top;
-	while (current)
-	{
-		while (current->left)
-		{
-			current = current->left;
-		}
-		if (current->right)
-		{
-			if (current->right->level <= Top->level)
-				return current;
-		}
-		if (current->right == nullptr)
-			return current;
-		current = current->right;
-			
-	}
-	return current;
-}
-
-Tree* FindCurrentNode(string Name)
-{
-	Tree *current;
-	current = root;
-	while ((current != nullptr) && (current->level >= root->level) && (current->name != Name))
-	{
-		while (current->left)
-		{
-			current = current->left;
-			if (current->name == Name) 
-				return current;
-		}
-		current = current->right;
-	}
-	if (current != nullptr)
-		if (current->level < 0)
-			return nullptr;
-	return current;
-}
-
-void Print()
-{
-	Tree *current;
-	current = root;
-	while ((current != nullptr) && (current->level >= root->level))
-	{
-		std::cout << VertexInfo(current) << endl;
-		while (current->left)
-		{
-			current = current->left;
-			std::cout << VertexInfo(current) << endl;
-		}
-		current = current->right;
-
-	}
-}
-
-void DelThreadSubTree(Tree *vertex)
-{
-	Tree* NodeBegin = FindBegin(vertex);
-	Tree* LastRight = FindLastRightNode(vertex);
-	if (vertex == root)
-	{
-		DelSubTree(vertex);
-		root = nullptr;
-		return;
-	}
-	//if (ver)
-	//if ((vertex->status == END) || (vertex->status == END_BEGIN))
-	//{
-	//	NodeBegin = FindBegin(vertex);
-	//	LastRight = FindLastRightNode(vertex);
-	//	NodeBegin->right = LastRight->right;
-	//	LastRight->right->status = EMPTY;
-	//	LastRight->right = nullptr;
-	//}
-	//else // if (Top->status == EMPTY)
-	//{
-	//	NodeBegin = FindBegin(vertex);
-	//	LastRight = FindLastRightNode(vertex);
-
-	//	if (NodeBegin->left == vertex)
-	//		if (LastRight->right->name == "Head")
-	//			NodeBegin->left = nullptr;
-	//		else
-	//			NodeBegin->left = LastRight->right;
-	//	else if (NodeBegin->right == vertex)
-	//		NodeBegin->right = LastRight->right;
-	//	NodeBegin->status += vertex->status;
-	//	LastRight->status = EMPTY;
-	//	LastRight->right = nullptr;	
-	//}
-
-	DelSubTree(vertex);
-}
-
 int main()
 {
 	setlocale(LC_ALL, "rus");
@@ -359,10 +96,13 @@ int main()
 		std::cout << "Не получается открыть файл " << endl;
 		return -1;
 	}
-	
+
+	Tree *root = nullptr;
+	stack *stackTop = nullptr;
+
 	ReadFromFile(inputFile, &root);
 	ThreadingTree(root);
-	Print();
+	Print(root);
 	std::cout << endl;
 	string SearchNodename;
 	Tree* Nod;
@@ -370,14 +110,14 @@ int main()
 	while (getline(cin, SearchNodename))
 	{
 		if (SearchNodename.empty()) break;
-		if (Nod = FindCurrentNode(SearchNodename))
+		if (Nod = FindCurrentNode(SearchNodename, root))
 		{
 			cout << "> будет удалена вершина | " << VertexInfo(Nod) << " |"<< endl << endl;
-			DelThreadSubTree(Nod);
+			DelThreadSubTree(Nod, root, *stackTop);
 		}
 		else
 			cout << "> вершина не найдена" << endl;
-		Print();
+		Print(root);
 		std::cout << endl << endl << endl;
 	}
 
