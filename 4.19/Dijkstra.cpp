@@ -32,7 +32,7 @@ void Dijkstra(vector<vector<unsigned>> const &matrix, unsigned const &startNode,
 		visited.emplace(currentNode);
 
 
-		output << " _ Ближайшая из соседних к предыдущей вершине: " << currentNode + 1 << endl;
+		output << " _ Ближайшая из соседних вершин: " << currentNode + 1 << endl;
 		i = 0;
 		for (auto current : matrix[currentNode])
 		{

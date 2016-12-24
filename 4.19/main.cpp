@@ -2,7 +2,7 @@
 //проиллюстрировать по шагам этапы его выполнения (10).
 
 #include "stdafx.h"
-#include "Matrix.h"
+#include "ReadMatrix.h"
 #include "Dijkstra.h"
 #include "WorkWithFiles.h"
 
