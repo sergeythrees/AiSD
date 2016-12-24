@@ -5,9 +5,7 @@ using namespace std;
 
 void ReadEdges(vector<vector<unsigned>> &matrix, std::ifstream &input, std::ostream &output)
 {
-	output 	<< " - Ребра с отрицательным весом, или узлами не входящими в (0.." << matrix.size() << ") "  << endl 
-		<< "   будут пропущены" << endl << endl
-		<< "Начинаю считывание: " << endl;
+	output << "Начинаю считывание: " << endl << endl;
 	while (!input.eof())
 	{
 		unsigned x;
@@ -26,7 +24,6 @@ void ReadEdges(vector<vector<unsigned>> &matrix, std::ifstream &input, std::ostr
 			break;
 		}
 	}
-	output << "Закончил" << endl;
 }
 
 bool IsValidEdge(unsigned const &x, unsigned const &y, unsigned const &weight, unsigned const &maxValue, ostream &output)

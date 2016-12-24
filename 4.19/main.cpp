@@ -18,9 +18,12 @@ int main(int argc, char *argv[])
 			return EXIT_FAILURE;
 
 	unsigned nodesCount;
-	cout << "Введите количество узлов: ";
+	cout << "Введите количество узлов (n) " << endl
+		<< " (Ребра с отрицательным весом, или узлами " << endl
+		<< "  не входящими в (0..n) будут пропущены)" << endl
+		<< "> ";
 	cin >> nodesCount;
-
+	cout << endl;
 	vector<vector<unsigned>> matrix(nodesCount, vector<unsigned>(nodesCount, 0));
 
 	ReadEdges(matrix, input, cout);
@@ -43,7 +46,6 @@ void MainLoop(vector<vector<unsigned>> const & matrix, ostream &output)
 				cout << "Начальный узел должен быть в диапазоне (1.." << matrix.size() << ")" << endl;
 				continue;
 			}
-			
 			Dijkstra(matrix, startNode - 1, output);
 		}
 	}
