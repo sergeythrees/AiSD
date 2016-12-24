@@ -12,8 +12,10 @@ void Dijkstra(vector<vector<unsigned>> const &matrix, unsigned const &startNode,
 
 	distance.assign(matrix.size(), INT_MAX);
 	distance[startNode] = 0;
+	output << " _ Текущая таблица путей: ";
+	PrintCurrentDistances(distance, output);
 
-	output << endl << "Ищу кратчайшие пути от узла " << startNode+1 << " до всех других" << endl << endl;
+	output << "Ищу кратчайшие пути от узла " << startNode+1 << " до всех других" << endl << endl;
 	for (auto node : matrix)
 	{
 		unsigned minDistance = INT_MAX;
@@ -30,7 +32,7 @@ void Dijkstra(vector<vector<unsigned>> const &matrix, unsigned const &startNode,
 		visited.emplace(currentNode);
 
 
-		output << "  Ближайшая из соседних к предыдущей вершине: " << currentNode + 1 << endl;
+		output << " _ Ближайшая из соседних к предыдущей вершине: " << currentNode + 1 << endl;
 		i = 0;
 		for (auto current : matrix[currentNode])
 		{
@@ -41,15 +43,14 @@ void Dijkstra(vector<vector<unsigned>> const &matrix, unsigned const &startNode,
 			{
 				distance[i] = distance[currentNode] + current;
 				parents[i] = currentNode;
-				output << "    " << currentNode + 1 << " > " << i + 1 << " = " << current <<  endl;
+				output << "   _ " << currentNode + 1 << " > " << i + 1 << " = " << current <<  endl;
+				output << "   _ Обновил таблицу путей: ";
+				PrintCurrentDistances(distance, output);
 			}
 			++i;
 		}
 
-		output << "    Вычисленные пути: ";
-		PrintCurrentDistances(distance, output);
-
-		output << "  Кратчайший путь: ";
+		output << " _ Кратчайший путь: ";
 		if (distance[currentNode] < INT_MAX)
 		{
 			ShowPath(parents, currentNode, startNode, output);
@@ -74,7 +75,7 @@ void PrintCurrentDistances(vector<unsigned> const &distance, ostream &output)
 		}
 		else
 		{
-			output << -1 << " ";
+			output << "*" << " ";
 		}
 	}
 	output << endl;
