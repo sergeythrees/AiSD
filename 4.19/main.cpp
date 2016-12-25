@@ -10,27 +10,23 @@ using namespace std;
 
 void MainLoop(vector<vector<unsigned>> const &matrix, ostream &output);
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[]) try
 {
-		setlocale(LC_ALL, "rus");
-		ifstream input(argv[1]);
-		if (!IsFileOpened(input))
-			return EXIT_FAILURE;
+	setlocale(LC_ALL, "rus");
+	ifstream input(argv[1]);
+	CheckFileAccess(input);
 
-	unsigned nodesCount;
-	cout << "Введите количество узлов (n) " << endl
-		<< " (Ребра с отрицательным весом, или узлами " << endl
-		<< "  не входящими в (0..n) будут пропущены)" << endl
-		<< "> ";
-	cin >> nodesCount;
-	cout << endl;
-	vector<vector<unsigned>> matrix(nodesCount, vector<unsigned>(nodesCount, 0));
-
+	vector<vector<unsigned>> matrix;
 	ReadEdges(matrix, input, cout);
 
 	MainLoop(matrix, cout);
 
 	return EXIT_SUCCESS;
+}
+catch (const exception& ex)
+{
+	cout << ex.what() << endl;
+	return EXIT_FAILURE;
 }
 
 void MainLoop(vector<vector<unsigned>> const & matrix, ostream &output)

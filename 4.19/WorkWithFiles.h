@@ -1,12 +1,10 @@
 #pragma once
 #include "stdafx.h"
 
-bool IsFileOpened(std::ifstream &input)
+void CheckFileAccess(std::ifstream &input)
 {
 	if (!input.is_open())
 	{
-		std::cerr << "Не удается открыть входной файл" << std::endl;
-		return false;
+		throw(std::exception("Не удается открыть входной файл"));
 	}
-	return true;
 }
