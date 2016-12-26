@@ -21,6 +21,7 @@ void ReadEdges(vector<vector<unsigned>> &matrix, std::ifstream &input, std::ostr
 			{
 				table.emplace(make_pair(x, y), weight);
 				uniqueNodes.emplace(x);
+				uniqueNodes.emplace(y);
 			}
 			else
 				output << ", ребро " << x << ">" << y << " будет пропущено" << endl;
@@ -36,17 +37,7 @@ void ReadEdges(vector<vector<unsigned>> &matrix, std::ifstream &input, std::ostr
 	matrix.assign(uniqueNodes.size(), vector<unsigned>(uniqueNodes.size(), 0));
 	for (auto current : table)
 	{
-		if (uniqueNodes.count(current.first.first) && uniqueNodes.count(current.first.second))
-		{
-			matrix[current.first.first - 1][current.first.second - 1] = current.second;
-		}
-		else
-		{
-			stringstream msg;
-			msg << "Обнаружена ссылка на несуществующую вершину " << current.first.first << ">" << current.first.second;
-			throw(out_of_range(msg.str()));
-		}
-		
+		matrix[current.first.first - 1][current.first.second - 1] = current.second;		
 	}
 }
 
