@@ -2,37 +2,21 @@
 //ќтсортировать файл методом простого сли€ни€ с 4 лентами(8).
 
 #include "stdafx.h"
-#include "WorkWithFile.h"
+#include <ctime>
 #include "MergeSort.h"
 
 using namespace std;
 
-int main(int argc, char *argv[]) try
+
+int main(int argc, char *argv[])
 {
 	setlocale(LC_ALL, "rus");
-	ifstream input(argv[1]);
-	CheckFileAccess(input);
 
-	vector<int> numbers;
-	ReadNumbers(numbers, input);
-
-	cout << "»сходный массив чисел:" << endl;
-	copy(numbers.begin(), numbers.end(), ostream_iterator<int>(std::cout, " "));
-	cout << endl << endl;
-
-	cout << "ѕроста€ сортировка сли€нием, с разбиением на 2 части (ленты):" << endl;
-	Merge2stSort(vector<int>(numbers), 0, numbers.size());
-	cout << endl;
-
-	cout << "ѕроста€ сортировка сли€нием, с разбиением на 4 части (ленты):" << endl;
-	Merge4stSort(numbers, 0, numbers.size());
-	cout << endl;
+	size_t beginTime = clock();
+	OutsideMergeSort(argv[1]);
+	size_t endTime = clock();
+	cout << "ѕримерное врем€ сортировки: " << ((endTime - beginTime) / 1000.0) << " c" << endl;
 
     return EXIT_SUCCESS;
-}
-catch (const exception& ex)
-{
-	cerr << ex.what() << endl;
-	return EXIT_FAILURE;
 }
 

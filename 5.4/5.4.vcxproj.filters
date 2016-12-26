@@ -27,9 +27,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WorkWithFile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MergeSort.h">
       <Filter>Header Files</Filter>
     </ClInclude>
