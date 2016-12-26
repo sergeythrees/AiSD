@@ -3,15 +3,16 @@
 
 using namespace std;
 
-void Merge(std::vector<int>& numbers, size_t part1Begin, size_t part1End, size_t part2Begin, size_t part2End)
+void Merge(std::vector<int>& numbers, size_t part1Begin, size_t part2Begin, size_t part2End)
 {
 	std::vector<int> temp;
 	size_t begin = part1Begin;
+	size_t medium = part2Begin;
 	size_t end = part2End;
 
 	while (temp.size() < end - begin)
 	{
-		if (part1Begin >= part1End || (part2Begin < end && numbers[part2Begin] < numbers[part1Begin]))
+		if (part1Begin >= medium || (part2Begin < end && numbers[part2Begin] < numbers[part1Begin]))
 		{
 			temp.push_back(numbers[part2Begin]);
 			++part2Begin;
@@ -28,6 +29,8 @@ void Merge(std::vector<int>& numbers, size_t part1Begin, size_t part1End, size_t
 
 void Merge2stSort(std::vector<int>& numbers, size_t begin, size_t end)
 {
+	size_t part2Begin = begin + (end - begin) / 2;
+	
 	if (end - begin < 2)
 	{
 		return;
@@ -39,14 +42,11 @@ void Merge2stSort(std::vector<int>& numbers, size_t begin, size_t end)
 		return;
 	}
 
-	Merge2stSort(numbers, begin, begin + (end - begin) / 2);
-	Merge2stSort(numbers, begin + (end - begin) / 2, end);
+	Merge2stSort(numbers, begin, part2Begin);
+	Merge2stSort(numbers, part2Begin, end);
 
 	std::vector<int> temp;
-	size_t part1Begin = begin;
-	size_t part1End = begin + (end - begin) / 2;
-	size_t part2Begin = part1End;
-	Merge(numbers, part1Begin, part1End, part2Begin, end);
+	Merge(numbers, begin, part2Begin, end);
 
 	copy(numbers.begin(), numbers.end(), ostream_iterator<int>(std::cout, " "));
 	cout << endl;
@@ -55,14 +55,9 @@ void Merge2stSort(std::vector<int>& numbers, size_t begin, size_t end)
 
 void Merge4stSort(std::vector<int>& numbers, size_t begin, size_t end)
 {
-	size_t part1Begin = begin;
-	size_t part1End = begin + (end - begin) / 4;
-	size_t part2Begin = part1End;
-	size_t part2End = part2Begin + (end - begin) / 4;
-	size_t part3Begin = part2End;
-	size_t part3End = part3Begin + (end - begin) / 4;
-	size_t part4Begin = part3End;
-	size_t part4End = end;
+	size_t part2Begin = begin + (end - begin) / 4;
+	size_t part3Begin = part2Begin + (end - begin) / 4;
+	size_t part4Begin = part3Begin + (end - begin) / 4;
 
 	if (end - begin < 2)
 	{
@@ -76,19 +71,19 @@ void Merge4stSort(std::vector<int>& numbers, size_t begin, size_t end)
 	}
 	else if (end - begin >= 4)
 	{
-		Merge4stSort(numbers, part1Begin, part1End);
-		Merge4stSort(numbers, part2Begin, part2End);
-		Merge4stSort(numbers, part3Begin, part3End);
-		Merge4stSort(numbers, part4Begin, part4End);
+		Merge4stSort(numbers, begin, part2Begin);
+		Merge4stSort(numbers, part2Begin, part3Begin);
+		Merge4stSort(numbers, part3Begin, part4Begin);
+		Merge4stSort(numbers, part4Begin, end);
 	}
 	else
 	{
-		Merge4stSort(numbers, part1Begin, part1End);
+		Merge4stSort(numbers, begin, part2Begin);
 	}
 
-	Merge(numbers, part1Begin, part1End, part2Begin, part2End);
-	Merge(numbers, part1Begin, part2End, part3Begin, part3End);
-	Merge(numbers, part1Begin, part3End, part4Begin, part4End);
+	Merge(numbers, begin, part2Begin, part3Begin);
+	Merge(numbers, begin, part3Begin, part4Begin);
+	Merge(numbers, begin, part4Begin, end);
 
 	copy(numbers.begin(), numbers.end(), ostream_iterator<int>(std::cout, " "));
 	cout << endl;
