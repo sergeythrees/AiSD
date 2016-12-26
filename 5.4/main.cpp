@@ -15,13 +15,18 @@ int main(int argc, char *argv[]) try
 
 	vector<int> numbers;
 	ReadNumbers(numbers, input);
-	copy(numbers.begin(), numbers.end(), ostream_iterator<int>(std::cout, " "));
 
+	cout << "»сходный массив чисел:" << endl;
+	copy(numbers.begin(), numbers.end(), ostream_iterator<int>(std::cout, " "));
+	cout << endl << endl;
+
+	cout << "ѕроста€ сортировка сли€нием, с разбиением на 2 части (ленты):" << endl;
+	Merge2stSort(vector<int>(numbers), 0, numbers.size());
 	cout << endl;
 
-	MergeSort(numbers, 0, numbers.size());
-	/*copy(numbers.begin(), numbers.end(), ostream_iterator<int>(std::cout, " "));
-	cout << endl;*/
+	cout << "ѕроста€ сортировка сли€нием, с разбиением на 4 части (ленты):" << endl;
+	Merge4stSort(numbers, 0, numbers.size());
+	cout << endl;
 
     return EXIT_SUCCESS;
 }
