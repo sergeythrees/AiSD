@@ -30,19 +30,13 @@ int main(int argc, char *argv[]) try
 	unsigned a;
 	unsigned b;
 
+	cout << "Введите две вершины для вывода кратчайшего пути или Ctrl+Z для выхода:" << endl;
 	while (!cin.eof() && !cin.fail())
 	{
-		cin >> a;
-		cin >> b;
-		try
-		{
-			PrintMinPath(a, b, paths, cout);
-			cout << " = " << matrix[a - 1][b - 1] << endl;
-		}
-		catch (const invalid_argument& ex)
-		{
-			cout << ex.what() << endl;
-		}		
+		if (!(cin >> a) || !(cin >> b))
+			continue;
+		PrintMinPath(a, b, paths, cout);
+		cout << " = " << matrix[a - 1][b - 1] << endl;	
 	}
 	
 
@@ -62,6 +56,7 @@ void FillPathsMatrix(vector<vector<unsigned>> &matrix, vector<vector<unsigned>> 
 			if (matrix[i][j] != INT_MAX)
 				paths[i][j] = j;
 }
+
 void Floyd(vector<vector<unsigned>> & matrix, vector<vector<unsigned>> &paths)
 {
 for (unsigned i = 0; i < matrix.size(); ++i)
@@ -86,6 +81,7 @@ for (unsigned i = 0; i < matrix.size(); ++i)
 
 void PrintMatrices(vector<vector<unsigned>> &matrix, vector<vector<unsigned>> &paths, ostream &output)
 {
+	output << "       таблица длин                    таблица путей" << endl;
 	output << endl << "  ";
 	for (unsigned i = 1; i < matrix.size()+1; ++i)
 		output << "_" << i << "_";
@@ -136,8 +132,8 @@ void PrintMinPath(unsigned a, unsigned b, vector<vector<unsigned>> &paths, ostre
 		a == 0 || b == 0
 		)
 	{
-		msg << "Вершина должна быть в диапазоне 1.." << paths.size() << endl;
-		throw invalid_argument(msg.str());
+		output << "Вершина должна быть в диапазоне 1.." << paths.size() << endl;
+		return;
 	}
 		
 
