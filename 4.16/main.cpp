@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void FillPathsMatrix(vector<vector<unsigned>> &matrix, vector<vector<unsigned>> &paths);
+void InitializePathsMatrix(vector<vector<unsigned>> &matrix, vector<vector<unsigned>> &paths);
 void Floyd(vector<vector<unsigned>> &matrix, vector<vector<unsigned>> &paths);
 void PrintMatrices(vector<vector<unsigned>> &matrix, vector<vector<unsigned>> &paths, ostream &output);
 void PrintMinPath(unsigned a, unsigned b, vector<vector<unsigned>> &paths, ostream &output);
@@ -22,7 +22,6 @@ int main(int argc, char *argv[]) try
 	ReadEdges(matrix, input, cout);
 
 	vector<vector<unsigned>> paths;
-	FillPathsMatrix(matrix, paths);
 
 	Floyd(matrix, paths);
 	PrintMatrices(matrix, paths, cout);
@@ -48,7 +47,7 @@ catch (const exception& ex)
 	return EXIT_FAILURE;
 }
 
-void FillPathsMatrix(vector<vector<unsigned>> &matrix, vector<vector<unsigned>> &paths)
+void InitializePathsMatrix(vector<vector<unsigned>> &matrix, vector<vector<unsigned>> &paths)
 {
 	paths.assign(matrix.size(), vector<unsigned>(matrix.size(), INT_MAX));
 	for (unsigned i = 0; i < matrix.size(); ++i)
@@ -59,6 +58,8 @@ void FillPathsMatrix(vector<vector<unsigned>> &matrix, vector<vector<unsigned>> 
 
 void Floyd(vector<vector<unsigned>> & matrix, vector<vector<unsigned>> &paths)
 {
+InitializePathsMatrix(matrix, paths);
+
 for (unsigned i = 0; i < matrix.size(); ++i)
 	for (unsigned k = 0; k < matrix.size(); ++k)
 		for (unsigned j = 0; j < matrix.size(); ++j)
