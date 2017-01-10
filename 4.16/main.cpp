@@ -30,7 +30,6 @@ int main(int argc, char *argv[]) try
 	
 	MainLoop(matrix, paths);
 	
-
 	return EXIT_SUCCESS;
 }
 catch (const exception& ex)
