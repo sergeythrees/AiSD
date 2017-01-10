@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) try
 	CheckFileAccess(input);
 
 	vector<vector<unsigned>> matrix;
-	ReadEdges(matrix, input, cout);
+	ReadEdges(matrix, input, cerr);
 
 	vector<vector<unsigned>> paths;
 
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) try
 }
 catch (const exception& ex)
 {
-	cout << ex.what() << endl;
+	cerr << ex.what() << endl;
 	return EXIT_FAILURE;
 }
 
