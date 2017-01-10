@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "ReadMatrix.h"
-#include "WorkWithFiles.h"
+#include "Verifications.h"
 
 using namespace std;
 
@@ -15,8 +15,9 @@ void PrintMinPath(unsigned a, unsigned b, vector<vector<unsigned>> &paths, ostre
 int main(int argc, char *argv[]) try
 {
 	setlocale(LC_ALL, "rus");
+	CheckArgumentsCount(argc, 2);
 	ifstream input(argv[1]);
-	CheckFileAccess(input);
+	CheckInputAccess(input);
 
 	vector<vector<unsigned>> matrix;
 	ReadEdges(matrix, input, cerr);

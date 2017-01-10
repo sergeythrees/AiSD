@@ -145,7 +145,7 @@
     <ClInclude Include="ReadMatrix.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="WorkWithFiles.h" />
+    <ClInclude Include="Verifications.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

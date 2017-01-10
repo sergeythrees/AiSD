@@ -21,10 +21,10 @@
     <ClInclude Include="targetver.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="WorkWithFiles.h">
+    <ClInclude Include="ReadMatrix.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="ReadMatrix.h">
+    <ClInclude Include="Verifications.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

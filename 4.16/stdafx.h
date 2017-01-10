@@ -15,6 +15,7 @@
 #include <istream>
 #include <fstream>
 #include <sstream>
+#include <sstream>
 #include <vector>
 #include <string>
 #include <set>
