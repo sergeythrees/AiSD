@@ -11,10 +11,12 @@ void InitializePathsMatrix(vector<vector<unsigned>> &matrix, vector<vector<unsig
 void Floyd(vector<vector<unsigned>> &matrix, vector<vector<unsigned>> &paths);
 void PrintMatrices(vector<vector<unsigned>> &matrix, vector<vector<unsigned>> &paths, ostream &output);
 void PrintMinPath(unsigned a, unsigned b, vector<vector<unsigned>> &paths, ostream &output);
+void MainLoop(vector<vector<unsigned>> &matrix, vector<vector<unsigned>> &paths);
 
 int main(int argc, char *argv[]) try
 {
 	setlocale(LC_ALL, "rus");
+
 	CheckArgumentsCount(argc, 2);
 	ifstream input(argv[1]);
 	CheckInputAccess(input);
@@ -23,21 +25,10 @@ int main(int argc, char *argv[]) try
 	ReadEdges(matrix, input, cerr);
 
 	vector<vector<unsigned>> paths;
-
 	Floyd(matrix, paths);
 	PrintMatrices(matrix, paths, cout);
-
-	unsigned a;
-	unsigned b;
-
-	cout << "Введите две вершины для вывода кратчайшего пути или Ctrl+Z для выхода:" << endl;
-	while (!cin.eof() && !cin.fail())
-	{
-		if (!(cin >> a) || !(cin >> b))
-			continue;
-		PrintMinPath(a, b, paths, cout);
-		cout << " = " << matrix[a - 1][b - 1] << endl;	
-	}
+	
+	MainLoop(matrix, paths);
 	
 
 	return EXIT_SUCCESS;
@@ -48,6 +39,20 @@ catch (const exception& ex)
 	return EXIT_FAILURE;
 }
 
+void MainLoop(vector<vector<unsigned>> &matrix, vector<vector<unsigned>> &paths)
+{
+	unsigned a;
+	unsigned b;
+
+	cout << "Введите две вершины для вывода кратчайшего пути или Ctrl+Z для выхода:" << endl;
+	while (!cin.eof() && !cin.fail())
+	{
+		if (!(cin >> a) || !(cin >> b))
+			continue;
+		PrintMinPath(a, b, paths, cout);
+		cout << " = " << matrix[a - 1][b - 1] << endl;
+	}
+}
 void InitializePathsMatrix(vector<vector<unsigned>> &matrix, vector<vector<unsigned>> &paths)
 {
 	paths.assign(matrix.size(), vector<unsigned>(matrix.size(), INT_MAX));
